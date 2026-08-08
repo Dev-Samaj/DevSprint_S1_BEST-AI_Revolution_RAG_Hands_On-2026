@@ -14,53 +14,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Register contributor
+      - name: Update README
         env:
           GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
         run: |
-          set -e
-
-          PR=$(gh api repos/$REPO/pulls/$PR_NUMBER)
-
-          USERNAME=$(echo "$PR" | jq -r '.user.login')
-          MERGED_AT=$(echo "$PR" | jq -r '.merged_at')
+          USERNAME=$(gh pr view $PR_NUMBER --repo $REPO --json author --jq '.author.login')
+          MERGED_AT=$(gh pr view $PR_NUMBER --repo $REPO --json mergedAt --jq '.mergedAt')
 
           FOLDER="submissions/$USERNAME"
 
           if [ ! -d "$FOLDER" ]; then
-            echo "Submission folder not found: $FOLDER"
+            echo "ERROR: $FOLDER does not exist"
             exit 1
           fi
 
-          PROJECT_LINK="[$USERNAME](./$FOLDER)"
-          GITHUB_LINK="[@$USERNAME](https://github.com/$USERNAME)"
-          DATE=$(date -u -d "$MERGED_AT" "+%d %b %Y, %H:%M UTC")
+          DATE=$(date -d "$MERGED_AT" "+%d %b %Y, %H:%M UTC")
 
           python3 - <<PY
           from pathlib import Path
 
-          readme = Path("README.md")
-          text = readme.read_text()
+          path = Path("README.md")
+          text = path.read_text()
 
-          row = f"| | $USERNAME | $GITHUB_LINK | $PROJECT_LINK | $DATE |"
+          row = "| | $USERNAME | [@$USERNAME](https://github.com/$USERNAME) | [$USERNAME](./submissions/$USERNAME) | $DATE |"
 
           marker = "|---|---|---|---|---|"
 
           if row not in text:
-              text = text.replace(
-                  marker,
-                  marker + "\n" + row,
-                  1
-              )
+              text = text.replace(marker, marker + "\n" + row, 1)
 
-          readme.write_text(text)
+          path.write_text(text)
           PY
 
           git config user.name "github-actions[bot]"
