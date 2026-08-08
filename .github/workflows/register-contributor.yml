@@ -1,0 +1,71 @@
+name: Register Contributor
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  register:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Register contributor
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -e
+
+          PR=$(gh api repos/$REPO/pulls/$PR_NUMBER)
+
+          USERNAME=$(echo "$PR" | jq -r '.user.login')
+          MERGED_AT=$(echo "$PR" | jq -r '.merged_at')
+
+          FOLDER="submissions/$USERNAME"
+
+          if [ ! -d "$FOLDER" ]; then
+            echo "Submission folder not found: $FOLDER"
+            exit 1
+          fi
+
+          PROJECT_LINK="[$USERNAME](./$FOLDER)"
+          GITHUB_LINK="[@$USERNAME](https://github.com/$USERNAME)"
+          DATE=$(date -u -d "$MERGED_AT" "+%d %b %Y, %H:%M UTC")
+
+          python3 - <<PY
+          from pathlib import Path
+
+          readme = Path("README.md")
+          text = readme.read_text()
+
+          row = f"| | $USERNAME | $GITHUB_LINK | $PROJECT_LINK | $DATE |"
+
+          marker = "|---|---|---|---|---|"
+
+          if row not in text:
+              text = text.replace(
+                  marker,
+                  marker + "\n" + row,
+                  1
+              )
+
+          readme.write_text(text)
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md
+          git commit -m "docs: register contributor $USERNAME" || exit 0
+          git push
