@@ -1,6 +1,6 @@
 # Contributing to the Workshop Repository
 
-Welcome to the Dev Samaj best AI RAG Workshop repository.
+Welcome to the Dev Samaj BEST AI RAG Workshop repository.
 
 Every participant is welcome to submit their workshop project.
 
@@ -13,8 +13,8 @@ Click **Fork** at the top-right of this repository.
 ### 2. Clone your fork
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/best-AI-RAG-Workshop.git
-cd best-AI-RAG-Workshop
+git clone https://github.com/YOUR-USERNAME/BEST-AI-RAG-Workshop.git
+cd BEST-AI-RAG-Workshop
 ```
 
 ### 3. Create a branch
@@ -86,7 +86,7 @@ Open your fork on GitHub and click:
 Create the PR against:
 
 ```text
-Dev-Samaj/best-AI-RAG-Workshop
+Dev-Samaj/BEST-AI-RAG-Workshop
 ```
 
 ### 10. Wait for Review
