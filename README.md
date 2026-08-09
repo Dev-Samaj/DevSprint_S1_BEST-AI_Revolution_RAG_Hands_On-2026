@@ -1,4 +1,4 @@
-# Dev Samaj — WEST AI RAG Workshop
+# Dev Samaj — best AI RAG Workshop
 
 > Hands-on AI RAG Model Development Workshop
 
@@ -6,7 +6,7 @@ Organized by **Dev Samaj**
 
 ## About
 
-This repository contains the resources, starter code, and participant projects created during the WEST AI RAG Workshop.
+This repository contains the resources, starter code, and participant projects created during the best AI RAG Workshop.
 
 Participants will learn the fundamentals of **Retrieval-Augmented Generation (RAG)** and build a basic working RAG system during the workshop.
 
@@ -62,4 +62,4 @@ Dev Samaj is a community for developers, designers, students and technology enth
 
 ---
 
-**Built during the Dev Samaj WEST AI RAG Workshop.**
+**Built during the Dev Samaj best AI RAG Workshop.**
