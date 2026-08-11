@@ -81,7 +81,8 @@ Five accounts, roughly 10–15 minutes total. Do this before the workshop starts
 ## 3️⃣ Repository: Fork → Clone → Build → Submit
 
 ### Fork it to your account
-1. Open [github.com/Dev-Samaj/BEST-AI-RAG-Workshop](https://github.com/Dev-Samaj/BEST-AI-RAG-Workshop)
+1. Open [github.com/Dev-Samaj/BEST-AI-RAG-Workshop](https://github.com/Dev-Samaj/DevSprint_S1_BEST-AI_Revolution_RAG_Hands_On-2026.git
+)
 2. Click **Fork** (top-right) → **Create fork**
 
 ### Clone it to your machine
